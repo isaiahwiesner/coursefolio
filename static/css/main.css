@@ -28,6 +28,18 @@
     --error-semitransparent: rgba(255, 51, 51, 0.5);
     --error-contrast: #fff;
     --link: #08f;
+    --assignment: rgb(85, 225, 85);
+    --assignment-background: rgb(170, 255, 170);
+    --assignment-contrast: #111;
+    --exam: rgb(255, 85, 85);
+    --exam-background: rgb(255, 170, 170);
+    --exam-contrast: #fff;
+    --quiz: rgb(255, 208, 85);
+    --quiz-background: rgb(255, 255, 170);
+    --quiz-contrast: #111;
+    --test: rgb(170, 85, 0);
+    --test-background: rgb(255, 170, 85);
+    --test-contrast: #111;
 }
 
 
@@ -109,6 +121,7 @@ main.content-footer {
     max-width: 20rem;
     margin: 0 auto;
 }
+
 .page-bottom .btn {
     width: 100%;
 }
@@ -502,6 +515,36 @@ h3.weekly-title {
 
 
 
+/* Course Recent Marks */
+.recent-marks {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.recent-marks .recent-mark {
+    color: var(--contrast);
+    background-color: var(--background);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    width: 100%;
+    max-width: 15rem;
+    transition: transform 150ms ease-in-out, box-shadow 150ms ease-in-out;
+}
+
+.recent-marks a:link {
+    text-decoration: none;
+}
+
+.recent-marks a:hover>.recent-mark {
+    transform: translateY(-0.25rem);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
+}
+
+
+
 /* Course Calendar */
 .calendar-controls {
     display: flex;
@@ -573,4 +616,79 @@ h3.weekly-title {
 
 .calendar .calendar-date.secondary .link {
     color: var(--contrast);
+}
+
+
+
+/* Course Marks */
+.mark-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.mark-container a:link {
+    text-decoration: none;
+}
+
+.mark-container a:hover>.mark {
+    transform: translateY(-0.25rem);
+    box-shadow: 0 8px 14px rgba(0, 0, 0, 0.5);
+}
+
+.mark {
+    width: 15rem;
+    height: 100%;
+    transition: transform 150ms ease-in-out, box-shadow 150ms ease-in-out;
+}
+
+.add-mark {
+    display: grid;
+    place-items: center;
+}
+
+.add-mark section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add-mark section span.material-symbols-outlined {
+    font-size: 2rem;
+}
+
+
+
+/* Mark Tags */
+.marktype-tag {
+    padding: 0 0.5rem;
+    text-transform: uppercase;
+    border-radius: 0.25rem;
+    width: fit-content;
+}
+
+.marktype-assignment {
+    background-color: var(--assignment-background);
+    border: 2px solid var(--assignment);
+    color: var(--assignment);
+}
+
+.marktype-exam {
+    background-color: var(--exam-background);
+    border: 2px solid var(--exam);
+    color: var(--exam);
+}
+
+.marktype-quiz {
+    background-color: var(--quiz-background);
+    border: 2px solid var(--quiz);
+    color: var(--quiz);
+}
+
+.marktype-test {
+    background-color: var(--test-background);
+    border: 2px solid var(--test);
+    color: var(--test);
 }

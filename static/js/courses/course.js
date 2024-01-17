@@ -9,13 +9,18 @@ document.addEventListener("DOMContentLoaded", () => {
             return `${new Date(start + (i * 24 * 60 * 60 * 1000)).toDateString().split(" ")[0]}.  ${new Date(start + (i * 24 * 60 * 60 * 1000)).toString().split(" ").slice(1, 3).join(". ")}`
         })
         const schedule = [...[...course.schedule ? course.schedule : []].map((e) => {
-            return {
+            var data = {
                 name: course.name,
                 type: "CLASS",
                 courseCode: course.courseCode,
                 start: start - ((now.getDay() - new Date(course.start).getDay()) * 24 * 60 * 60 * 1000) + e[0],
                 end: start - ((now.getDay() - new Date(course.start).getDay()) * 24 * 60 * 60 * 1000) + e[1],
             }
+            if (new Date(data.start).getTimezoneOffset() != new Date(start).getTimezoneOffset()) {
+                data.start = data.start + (new Date(data.start).getTimezoneOffset() - new Date(start).getTimezoneOffset()) * 60 * 1000
+                data.end = data.end + (new Date(data.start).getTimezoneOffset() - new Date(start).getTimezoneOffset()) * 60 * 1000
+            }
+            return data
         }), ...marks.map((m) => {
             var mark = {
                 name: m.name,
@@ -41,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 let tm = document.createElement("span")
                 let nm = document.createElement("span")
                 if (s.type == "ASSIGNMENT") {
-                    tm.textContent = `DUE ${new Date(s.end).toLocaleTimeString().slice(0, -6) + new Date(s.end).toLocaleTimeString().slice(-2)}`
+                    tm.textContent = `DUE ${new Date(s.start).toLocaleTimeString().slice(0, -6) + new Date(s.start).toLocaleTimeString().slice(-2)}`
                 }
                 else if (!s.end) {
                     tm.textContent = `${new Date(s.start).toLocaleTimeString().slice(0, -6) + new Date(s.start).toLocaleTimeString().slice(-2)}`
@@ -57,6 +62,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 else {
                     evt.append(" - ")
                 }
+                if (s.type != "CLASS") {
+                    let markTag = document.createElement("span")
+                    markTag.classList.add("marktype-tag")
+                    markTag.classList.add(`marktype-${s.type.toLowerCase()}`)
+                    markTag.textContent = s.type
+                    evt.append(markTag)
+                    evt.append(" ")
+                }
                 if (s.type == "CLASS") {
                     nm.textContent = s.name
                 }
@@ -65,6 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     evtLink.setAttribute("href", `/marks/${s.id}`)
                     evtLink.classList.add("link")
                     evtLink.textContent = s.name
+                    evtLink.setAttribute("title", s.name)
                     nm.append(evtLink)
                 }
                 nm.classList.add("bold")
@@ -142,6 +156,11 @@ document.addEventListener("DOMContentLoaded", () => {
             for (const m of recentMarks.slice(0, 5)) {
                 let mark = document.createElement("section")
                 mark.classList.add("recent-mark")
+                let markTag = document.createElement("p")
+                markTag.classList.add("marktype-tag")
+                markTag.classList.add(`marktype-${m.markType.toLowerCase()}`)
+                markTag.textContent = m.markType
+                mark.append(markTag)
                 let markName = document.createElement("h4")
                 markName.textContent = `${m.name} (${String(m.weight).includes(".")
                     ? String(m.weight).split(".")[1].length > 2
@@ -168,6 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 let markLink = document.createElement("a")
                 markLink.setAttribute("href", `/marks/${m.id}`)
                 markLink.append(mark)
+                markLink.setAttribute("title", m.name)
                 recentMarksContainer.append(markLink)
             }
         }

@@ -5,45 +5,6 @@ Courses - CourseFolio{% endblock %}
 {% include "components/navbar.html" %}
 
 {% block body %}
-<style>
-    .mark-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1rem;
-        margin-top: 1rem;
-    }
-
-    .mark-container a:link {
-        text-decoration: none;
-    }
-
-    .mark-container a:hover>.mark {
-        transform: translateY(-0.25rem);
-        box-shadow: 0 8px 14px rgba(0, 0, 0, 0.5);
-    }
-
-    .mark {
-        width: 15rem;
-        height: 100%;
-        transition: transform 150ms ease-in-out, box-shadow 150ms ease-in-out;
-    }
-
-    .add-mark {
-        display: grid;
-        place-items: center;
-    }
-
-    .add-mark section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .add-mark section span.material-symbols-outlined {
-        font-size: 2rem;
-    }
-</style>
 
 <main class="content-navbar content-footer flex flex-col gap-2">
     <section class="course-header">
@@ -56,6 +17,23 @@ Courses - CourseFolio{% endblock %}
         {% for mark in marks %}
         <a href="/marks/{{ mark['id'] }}" title="{{ mark['name'] }}">
             <section class="mark card">
+                {% if mark['markType'] == "ASSIGNMENT" %}
+                <p class="marktype-tag marktype-assignment">
+                    Assignment
+                </p>
+                {% elif mark['markType'] == "EXAM" %}
+                <p class="marktype-tag marktype-exam">
+                    Exam
+                </p>
+                {% elif mark['markType'] == "QUIZ" %}
+                <p class="marktype-tag marktype-quiz">
+                    Quiz
+                </p>
+                {% elif mark['markType'] == "TEST" %}
+                <p class="marktype-tag marktype-test">
+                    Test
+                </p>
+                {% endif %}
                 <h4>
                     {{ mark["name"] }}
                     <script>
@@ -130,7 +108,6 @@ Courses - CourseFolio{% endblock %}
     const course = JSON.parse(serialize("{{ course }}"))
     const marks = JSON.parse(serialize("{{ marks }}"))
 </script>
-<script></script>
 
 {% include "components/footer.html" %}
 

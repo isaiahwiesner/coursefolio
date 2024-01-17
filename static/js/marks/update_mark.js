@@ -22,12 +22,18 @@ document.addEventListener("DOMContentLoaded", () => {
     var startValue = new Date(mark.startDate)
     if (mark.startDate && String(startValue) != "Invalid Date") {
         startValue = new Date(startValue.getTime() - (new Date().getTimezoneOffset() * 60 * 1000))
+        if (startValue.getTimezoneOffset() != new Date().getTimezoneOffset()) {
+            startValue = new Date(startValue.getTime() + (new Date().getTimezoneOffset() - startValue.getTimezoneOffset())*60*1000)
+        }
         startDateInput.value = startValue.toISOString().split("T")[0]
         startTimeInput.value = startValue.toISOString().split("T")[1].slice(0, 5)
     }
     var endValue = new Date(mark.endDate)
     if (String(endValue) != "Invalid Date") {
         endValue = new Date(endValue.getTime() - (new Date().getTimezoneOffset() * 60 * 1000))
+        if (endValue.getTimezoneOffset() != new Date().getTimezoneOffset()) {
+            endValue = new Date(endValue.getTime() + (new Date().getTimezoneOffset() - endValue.getTimezoneOffset())*60*1000)
+        }
         endDateInput.value = endValue.toISOString().split("T")[0]
         endTimeInput.value = endValue.toISOString().split("T")[1].slice(0, 5)
     }

@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const days = [0, 1, 2, 3, 4].map((i) => {
         return dayNames[new Date(start + (i * 24 * 60 * 60 * 1000)).getDay()]
     })
-    const schedule = courses.reduce((con, course) => {
+    const schedule = [...courses ? courses : []].reduce((con, course) => {
         con.push(...course.schedule.map((e) => {
             return {
                 name: course.name,

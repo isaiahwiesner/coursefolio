@@ -55,13 +55,18 @@ document.addEventListener("DOMContentLoaded", () => {
                         && (firstVisibleDay.getTime() + (((firstVisibleDay.getDay() + new Date(course.start).getDay() + 7) % 7) * 24 * 60 * 60 * 1000)) + (i * 7 * 24 * 60 * 60 * 1000) + e[0] > course.start
                         && (firstVisibleDay.getTime() + (((firstVisibleDay.getDay() + new Date(course.start).getDay() + 7) % 7) * 24 * 60 * 60 * 1000)) + (i * 7 * 24 * 60 * 60 * 1000) + e[0] < course.start + (((course.weeks + (course.readingWeek ? 1 : 0)) * 7 - 2) * 24 * 60 * 60 * 1000)
                     ) {
-                        con2.push({
+                        var data = {
                             name: course.name,
                             type: "CLASS",
                             courseCode: course.courseCode,
                             start: (firstVisibleDay.getTime() + (((firstVisibleDay.getDay() + new Date(course.start).getDay() + 7) % 7) * 24 * 60 * 60 * 1000)) + (i * 7 * 24 * 60 * 60 * 1000) + e[0],
                             end: (firstVisibleDay.getTime() + (((firstVisibleDay.getDay() + new Date(course.start).getDay() + 7) % 7) * 24 * 60 * 60 * 1000)) + (i * 7 * 24 * 60 * 60 * 1000) + e[1],
-                        })
+                        }
+                        if (new Date(data.start).getTimezoneOffset() != firstVisibleDay.getTimezoneOffset()) {
+                            data.start = data.start + (new Date(data.start).getTimezoneOffset() - firstVisibleDay.getTimezoneOffset()) * 60 * 1000
+                            data.end = data.end + (new Date(data.start).getTimezoneOffset() - firstVisibleDay.getTimezoneOffset()) * 60 * 1000
+                        }
+                        con2.push(data)
                     }
                     return con2
                 }, [])]
@@ -121,6 +126,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     else {
                         evt.append(" - ")
                     }
+                    if (s.type != "CLASS") {
+                        let markTag = document.createElement("span")
+                        markTag.classList.add("marktype-tag")
+                        markTag.classList.add(`marktype-${s.type.toLowerCase()}`)
+                        markTag.textContent = s.type
+                        evt.append(markTag)
+                        evt.append(" ")
+                    }
                     if (s.type == "CLASS") {
                         nm.textContent = s.name
                     }
@@ -129,6 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         evtLink.setAttribute("href", `/marks/${s.id}`)
                         evtLink.classList.add("link")
                         evtLink.textContent = s.name
+                        evtLink.setAttribute("title", s.name)
                         nm.append(evtLink)
                     }
                     nm.classList.add("bold")
