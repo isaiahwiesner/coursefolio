@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const start = new Date(courses[0].start).getTime()
+    const start = new Date(courses[0] ? courses[0].start : "2024-01-01T00:00:00").getTime()
     const dayNames = "Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday".split(",")
     const days = [0, 1, 2, 3, 4].map((i) => {
         return dayNames[new Date(start + (i * 24 * 60 * 60 * 1000)).getDay()]

@@ -1,6 +1,7 @@
 venv/
 scripts/
+build/
 **/__pycache__/
-.env
 *.db
 *.sqbpro
+.env
