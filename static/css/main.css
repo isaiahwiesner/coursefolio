@@ -30,16 +30,16 @@
     --link: #08f;
     --assignment: rgb(85, 225, 85);
     --assignment-background: rgb(170, 255, 170);
-    --assignment-contrast: #111;
+    --assignment-contrast: #161;
     --exam: rgb(255, 85, 85);
     --exam-background: rgb(255, 170, 170);
-    --exam-contrast: #fff;
+    --exam-contrast: #611;
     --quiz: rgb(255, 208, 85);
     --quiz-background: rgb(255, 255, 170);
-    --quiz-contrast: #111;
+    --quiz-contrast: #651;
     --test: rgb(170, 85, 0);
     --test-background: rgb(255, 170, 85);
-    --test-contrast: #111;
+    --test-contrast: #641;
 }
 
 
@@ -71,9 +71,12 @@ nav a {
     color: var(--navbar-contrast);
     text-decoration: none;
     transition: filter 150ms ease-in-out;
+    border: none;
+    outline: none;
 }
 
-nav a:hover {
+nav a:hover,
+nav a:focus {
     filter: brightness(80%);
 }
 
@@ -301,7 +304,8 @@ p.required-legend::after {
     cursor: pointer;
 }
 
-.btn-primary:hover:not(:disabled) {
+.btn-primary:hover:not(:disabled),
+.btn-primary:focus:not(:disabled) {
     background-color: var(--primary-semitransparent);
 }
 
@@ -314,7 +318,8 @@ p.required-legend::after {
     cursor: pointer;
 }
 
-.btn-primary-outline:hover:not(:disabled) {
+.btn-primary-outline:hover:not(:disabled),
+.btn-primary-outline:focus:not(:disabled) {
     color: var(--primary-semitransparent);
     border-color: var(--primary-semitransparent);
 }
@@ -327,7 +332,8 @@ p.required-legend::after {
     cursor: pointer;
 }
 
-.btn-secondary:hover:not(:disabled) {
+.btn-secondary:hover:not(:disabled),
+.btn-secondary:focus:not(:disabled) {
     background-color: var(--secondary-semitransparent);
 }
 
@@ -340,7 +346,8 @@ p.required-legend::after {
     cursor: pointer;
 }
 
-.btn-secondary-outline:hover:not(:disabled) {
+.btn-secondary-outline:hover:not(:disabled),
+.btn-secondary-outline:focus:not(:disabled) {
     color: var(--secondary-semitransparent);
     border-color: var(--secondary-semitransparent);
 }
@@ -353,7 +360,8 @@ p.required-legend::after {
     cursor: pointer;
 }
 
-.btn-error:hover:not(:disabled) {
+.btn-error:hover:not(:disabled),
+.btn-error:focus:not(:disabled) {
     background-color: var(--error-semitransparent);
 }
 
@@ -366,7 +374,8 @@ p.required-legend::after {
     cursor: pointer;
 }
 
-.btn-error-outline:hover:not(:disabled) {
+.btn-error-outline:hover:not(:disabled),
+.btn-error-outline:focus:not(:disabled) {
     color: var(--error-semitransparent);
     border-color: var(--error-semitransparent);
 }
@@ -389,9 +398,12 @@ p.required-legend::after {
 .link {
     text-decoration: none;
     color: var(--link);
+    border: none;
+    outline: none;
 }
 
-.link:hover {
+.link:hover,
+.link:focus {
     text-decoration: underline;
 }
 
@@ -448,9 +460,12 @@ h3.weekly-title {
 
 .course-container a:link {
     text-decoration: none;
+    border: none;
+    outline: none;
 }
 
-.course-container a:hover>.course {
+.course-container a:hover>.course,
+.course-container a:focus>.course {
     transform: translateY(-0.25rem);
     box-shadow: 0 8px 14px rgba(0, 0, 0, 0.5);
 }
@@ -536,9 +551,12 @@ h3.weekly-title {
 
 .recent-marks a:link {
     text-decoration: none;
+    border: none;
+    outline: none;
 }
 
-.recent-marks a:hover>.recent-mark {
+.recent-marks a:hover>.recent-mark,
+.recent-marks a:focus>.recent-mark {
     transform: translateY(-0.25rem);
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
 }
@@ -560,7 +578,8 @@ h3.weekly-title {
     cursor: pointer;
 }
 
-.calendar-controls span:hover:not(.disabled) {
+.calendar-controls span:hover:not(.disabled),
+.calendar-controls span:focus:not(.disabled) {
     opacity: 75%;
 }
 
@@ -631,9 +650,12 @@ h3.weekly-title {
 
 .mark-container a:link {
     text-decoration: none;
+    border: none;
+    outline: none;
 }
 
-.mark-container a:hover>.mark {
+.mark-container a:hover>.mark,
+.mark-container a:focus>.mark {
     transform: translateY(-0.25rem);
     box-shadow: 0 8px 14px rgba(0, 0, 0, 0.5);
 }
@@ -672,23 +694,23 @@ h3.weekly-title {
 .marktype-assignment {
     background-color: var(--assignment-background);
     border: 2px solid var(--assignment);
-    color: var(--assignment);
+    color: var(--assignment-contrast);
 }
 
 .marktype-exam {
     background-color: var(--exam-background);
     border: 2px solid var(--exam);
-    color: var(--exam);
+    color: var(--exam-contrast);
 }
 
 .marktype-quiz {
     background-color: var(--quiz-background);
     border: 2px solid var(--quiz);
-    color: var(--quiz);
+    color: var(--quiz-contrast);
 }
 
 .marktype-test {
     background-color: var(--test-background);
     border: 2px solid var(--test);
-    color: var(--test);
+    color: var(--test-contrast);
 }

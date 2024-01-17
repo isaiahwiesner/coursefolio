@@ -98,9 +98,11 @@ Courses - CourseFolio{% endblock %}
             </section>
         </a>
     </section>
-    <a href="/courses/{{ course['id'] }}" class="link" title="Course Homepage">
-        <p class="text-center">Back to course homepage</p>
-    </a>
+    <p class="text-center">
+        <a href="/courses/{{ course['id'] }}" class="link" title="Course Homepage">
+            Back to course homepage
+        </a>
+    </p>
 </main>
 
 <script src="{{ url_for('static', path='js/utils/serialize.js') }}"></script>

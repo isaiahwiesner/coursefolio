@@ -1,0 +1,6 @@
+/venv
+/scripts
+*/__pycache__
+.env
+*.db
+*.sqbpro
