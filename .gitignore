@@ -1,5 +1,5 @@
 venv/
-**scripts/
+scripts/
 **/__pycache__/
 .env
 *.db
