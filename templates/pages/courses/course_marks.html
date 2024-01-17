@@ -1,0 +1,137 @@
+{% extends "layouts/layout.html" %}
+{% block title %}Marks - {% if course["courseCode"] %}{{ course["courseCode"] }} {% endif %}{{ course["name"] }} -
+Courses - CourseFolio{% endblock %}
+
+{% include "components/navbar.html" %}
+
+{% block body %}
+<style>
+    .mark-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .mark-container a:link {
+        text-decoration: none;
+    }
+
+    .mark-container a:hover>.mark {
+        transform: translateY(-0.25rem);
+        box-shadow: 0 8px 14px rgba(0, 0, 0, 0.5);
+    }
+
+    .mark {
+        width: 15rem;
+        height: 100%;
+        transition: transform 150ms ease-in-out, box-shadow 150ms ease-in-out;
+    }
+
+    .add-mark {
+        display: grid;
+        place-items: center;
+    }
+
+    .add-mark section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .add-mark section span.material-symbols-outlined {
+        font-size: 2rem;
+    }
+</style>
+
+<main class="content-navbar content-footer flex flex-col gap-2">
+    <section class="course-header">
+        <h1>Marks - {% if course["courseCode"] %}{{ course["courseCode"] }} {% endif %}{{ course["name"] }}</h1>
+        {% if course["classCode"] %}
+        <p class="light-contrast">Class {{ course["classCode"] }}</p>
+        {% endif %}
+    </section>
+    <section class="mark-container">
+        {% for mark in marks %}
+        <a href="/marks/{{ mark['id'] }}" title="{{ mark['name'] }}">
+            <section class="mark card">
+                <h4>
+                    {{ mark["name"] }}
+                    <script>
+                        var weight = parseFloat("{{ mark['weight'] }}")
+                        document.write(String(weight).includes(".")
+                            ? String(weight).split(".")[1].length > 2
+                                ? "(" + weight.toFixed(2) + "%)"
+                                : "(" + String(weight) + "%)"
+                            : "(" + String(weight) + ".0%)")
+                    </script>
+                </h4>
+                {% if mark["completed"] %}
+                <p>
+                    <script>
+                        var marks = parseFloat("{{ mark['marks'] }}")
+                        if (String(marks) == "NaN") marks = 0
+                        var totalMarks = parseFloat("{{ mark['totalMarks'] }}")
+                        var percentage = marks / totalMarks * 100
+                        document.write(`${marks}/${totalMarks} (${String(percentage).includes(".")
+                            ? String(percentage).split(".")[1].length > 2
+                                ? percentage.toFixed(2) + "%"
+                                : String(percentage) + "%"
+                            : String(percentage) + ".0%"})`)
+                    </script>
+                </p>
+                <p class="light-contrast">
+                    Updated
+                    <script>
+                        var update = new Date(parseFloat("{{ mark['updatedAt'] }}"))
+                        var update = new Date(update.getTime() - (new Date().getTimezoneOffset() * 60 * 1000))
+                        document.write(`${update.toDateString().split(" ")[1]}. ${update.getDate()}, ${update.toLocaleTimeString().slice(0, -6) + update.toLocaleTimeString().slice(-2)}`)
+                    </script>
+                </p>
+                {% else %}
+                <p>
+                    <script>
+                        var start = new Date(parseInt("{{ mark['startDate'] }}"))
+                        var end = new Date(parseInt("{{ mark['endDate'] }}"))
+                        if ("{{ mark['markType'] }}" == "ASSIGNMENT") {
+                            document.write(`Due ${end.toDateString().split(" ")[0]}. ${end.toDateString().split(" ")[1]}. ${end.getDate()} ${end.toLocaleTimeString().slice(0, -6) + end.toLocaleTimeString().slice(-2)}`)
+                        }
+                        else if (String(start) != "Invalid Date") {
+                            document.write(`${end.toDateString().split(" ")[0]}. ${end.toDateString().split(" ")[1]}. ${end.getDate()} ${start.toLocaleTimeString().slice(0, -6) + start.toLocaleTimeString().slice(-2)}-${end.toLocaleTimeString().slice(0, -6) + end.toLocaleTimeString().slice(-2)}`)
+                        }
+                        else {
+                            document.write(`${end.toDateString().split(" ")[0]}. ${end.toDateString().split(" ")[1]}. ${end.getDate()} ${end.toLocaleTimeString().slice(0, -6) + end.toLocaleTimeString().slice(-2)}`)
+                        }
+                    </script>
+                </p>
+                {% endif %}
+            </section>
+        </a>
+        {% endfor %}
+        <a href="/marks/add?courseId={{ course['id'] }}" title="Add Mark">
+            <section class="mark card add-mark">
+                <section>
+                    <span class="material-symbols-outlined">
+                        add_circle
+                    </span>
+                    <p>Add Mark</p>
+                </section>
+            </section>
+        </a>
+    </section>
+    <a href="/courses/{{ course['id'] }}" class="link" title="Course Homepage">
+        <p class="text-center">Back to course homepage</p>
+    </a>
+</main>
+
+<script src="{{ url_for('static', path='js/utils/serialize.js') }}"></script>
+<script>
+    const course = JSON.parse(serialize("{{ course }}"))
+    const marks = JSON.parse(serialize("{{ marks }}"))
+</script>
+<script></script>
+
+{% include "components/footer.html" %}
+
+{% endblock %}

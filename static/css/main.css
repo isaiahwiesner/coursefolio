@@ -1,0 +1,576 @@
+/* All */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Roboto", sans-serif;
+}
+
+
+
+/* Variables */
+:root {
+    --background: #f0f0f0;
+    --contrast: #111;
+    --paper: #fff;
+    --paper-contrast: #000;
+    --navbar-background: #333;
+    --navbar-contrast: #fff;
+    --footer-background: #333;
+    --footer-contrast: #fff;
+    --primary: #5af;
+    --primary-semitransparent: rgba(85, 170, 255, 0.5);
+    --primary-contrast: #fff;
+    --secondary: #333;
+    --secondary-semitransparent: rgba(51, 51, 51, 0.5);
+    --secondary-contrast: #fff;
+    --error: #f33;
+    --error-semitransparent: rgba(255, 51, 51, 0.5);
+    --error-contrast: #fff;
+    --link: #08f;
+}
+
+
+
+/* Body */
+body {
+    background-color: var(--background);
+    color: var(--contrast);
+}
+
+
+
+/* Navbar */
+nav {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4rem;
+    background-color: var(--navbar-background);
+    padding: 0 10%;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+nav a {
+    color: var(--navbar-contrast);
+    text-decoration: none;
+    transition: filter 150ms ease-in-out;
+}
+
+nav a:hover {
+    filter: brightness(80%);
+}
+
+nav ul {
+    list-style: none;
+}
+
+nav ul li {
+    display: inline-block;
+    margin-right: 1rem;
+}
+
+nav ul li a.active {
+    color: var(--primary);
+}
+
+
+
+/* Main */
+main {
+    width: 80%;
+    margin: 0 auto;
+    padding: 1rem 0;
+    min-height: 100vh;
+}
+
+main.content-navbar {
+    margin: 0 auto 0 auto;
+    padding: 5rem 0 1rem 0;
+}
+
+main.content-footer {
+    min-height: calc(100vh - 4rem) !important;
+}
+
+
+
+/* Page Bottom */
+.page-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 20rem;
+    margin: 0 auto;
+}
+.page-bottom .btn {
+    width: 100%;
+}
+
+
+
+/* Footer */
+footer {
+    min-height: 4rem;
+    padding: 0 10%;
+    background-color: var(--footer-background);
+    color: var(--footer-contrast);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+footer p,
+footer h4 {
+    text-align: center;
+}
+
+
+
+/* Div Utilities */
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.gap-1 {
+    gap: 1rem;
+}
+
+.gap-2 {
+    gap: 2rem;
+}
+
+.w-20 {
+    width: 100%;
+    max-width: 20rem;
+}
+
+.w-30 {
+    width: 100%;
+    max-width: 30rem;
+}
+
+.w-50 {
+    width: 100%;
+    max-width: 50rem;
+}
+
+
+
+/* Card Utility */
+.card {
+    padding: 1rem;
+    background-color: var(--paper);
+    color: var(--paper-contrast);
+    border-radius: 0.5rem;
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.5);
+}
+
+
+
+/* Form Utilities */
+form {
+    height: fit-content;
+}
+
+p.required-legend {
+    position: relative;
+}
+
+p.required-legend::before {
+    content: "*";
+    position: relative;
+    color: var(--error);
+}
+
+p.required-legend::after {
+    content: " Required";
+    position: relative;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.form-group .form-tooltip {
+    font-size: 0.8em;
+    color: var(--secondary-semitransparent);
+}
+
+.form-group.required label {
+    position: relative;
+}
+
+.form-group.required label::after {
+    content: " *";
+    position: relative;
+    color: var(--error);
+}
+
+.form-control {
+    width: 100%;
+    outline: none;
+    border: 2px solid var(--contrast);
+    border-radius: 0.5rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.form-control:disabled {
+    opacity: 50%;
+    cursor: not-allowed;
+}
+
+.input-list {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.input-list-item {
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 1rem;
+    border-radius: 1rem;
+    background-color: var(--background);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
+}
+
+.input-list-item span {
+    cursor: pointer;
+}
+
+.error-text {
+    color: var(--error);
+}
+
+
+
+/* Buttons */
+.btn {
+    outline: none;
+    border: none;
+    padding: 0.25rem 0.5rem;
+}
+
+.btn:disabled {
+    opacity: 50%;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: var(--primary-contrast);
+    border-radius: 0.5rem;
+    transition: background-color 150ms ease-in-out;
+    cursor: pointer;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--primary-semitransparent);
+}
+
+.btn-primary-outline {
+    background-color: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    border-radius: 0.5rem;
+    transition: color 150ms ease-in-out, border-color 150ms ease-in-out;
+    cursor: pointer;
+}
+
+.btn-primary-outline:hover:not(:disabled) {
+    color: var(--primary-semitransparent);
+    border-color: var(--primary-semitransparent);
+}
+
+.btn-secondary {
+    background-color: var(--secondary);
+    color: var(--secondary-contrast);
+    border-radius: 0.5rem;
+    transition: background-color 150ms ease-in-out;
+    cursor: pointer;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background-color: var(--secondary-semitransparent);
+}
+
+.btn-secondary-outline {
+    background-color: transparent;
+    border: 2px solid var(--secondary);
+    color: var(--secondary);
+    border-radius: 0.5rem;
+    transition: color 150ms ease-in-out, border-color 150ms ease-in-out;
+    cursor: pointer;
+}
+
+.btn-secondary-outline:hover:not(:disabled) {
+    color: var(--secondary-semitransparent);
+    border-color: var(--secondary-semitransparent);
+}
+
+.btn-error {
+    background-color: var(--error);
+    color: var(--error-contrast);
+    border-radius: 0.5rem;
+    transition: background-color 150ms ease-in-out;
+    cursor: pointer;
+}
+
+.btn-error:hover:not(:disabled) {
+    background-color: var(--error-semitransparent);
+}
+
+.btn-error-outline {
+    background-color: transparent;
+    border: 2px solid var(--error);
+    color: var(--error);
+    border-radius: 0.5rem;
+    transition: color 150ms ease-in-out, border-color 150ms ease-in-out;
+    cursor: pointer;
+}
+
+.btn-error-outline:hover:not(:disabled) {
+    color: var(--error-semitransparent);
+    border-color: var(--error-semitransparent);
+}
+
+
+
+/* Text Utilities */
+.text-center {
+    text-align: center;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.light-contrast {
+    color: var(--secondary-semitransparent);
+}
+
+.link {
+    text-decoration: none;
+    color: var(--link);
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+
+
+/* Weekly Schedule */
+.weekly-schedule {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(10rem, 1fr));
+    overflow: scroll;
+}
+
+.weekly-schedule::-webkit-scrollbar {
+    display: none;
+}
+
+h3.weekly-title {
+    margin-bottom: 0.5rem;
+}
+
+.weekly-schedule .day {
+    height: 100%;
+    min-height: 5rem;
+    background-color: var(--primary-semitransparent);
+    border: 2px solid var(--secondary-semitransparent);
+}
+
+.weekly-schedule .day h4 {
+    background-color: var(--primary);
+    color: var(--primary-contrast);
+    padding: 0 0.5rem;
+    border-bottom: 2px solid white;
+}
+
+.weekly-schedule .day p {
+    padding: 0 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.weekly-schedule .day p:nth-of-type(1) {
+    margin-top: 0.25rem;
+}
+
+
+
+/* Courses */
+.course-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.course-container a:link {
+    text-decoration: none;
+}
+
+.course-container a:hover>.course {
+    transform: translateY(-0.25rem);
+    box-shadow: 0 8px 14px rgba(0, 0, 0, 0.5);
+}
+
+.course {
+    width: 15rem;
+    height: 100%;
+    transition: transform 150ms ease-in-out, box-shadow 150ms ease-in-out;
+}
+
+.add-course {
+    display: grid;
+    place-items: center;
+}
+
+.add-course section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add-course section span.material-symbols-outlined {
+    font-size: 2rem;
+}
+
+
+
+/* Course Header */
+.course-header h1 {
+    font-size: 2em;
+}
+
+
+
+/* Course Mark Summary */
+.mark-summary {
+    margin-top: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(12rem, 1fr));
+    overflow: scroll;
+}
+
+.mark-summary::-webkit-scrollbar {
+    display: none;
+}
+
+.mark-summary .mark-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.mark-summary .mark-detail h1 {
+    font-size: 3rem;
+}
+
+.mark-summary .mark-detail h4 {
+    font-size: 1.5rem;
+    font-weight: normal;
+}
+
+
+
+/* Course Calendar */
+.calendar-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.calendar-controls span {
+    color: var(--contrast);
+    transition: opacity 150ms ease-in-out;
+    cursor: pointer;
+}
+
+.calendar-controls span:hover:not(.disabled) {
+    opacity: 75%;
+}
+
+.calendar-controls span.disabled {
+    opacity: 50%;
+    cursor: not-allowed;
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(10rem, 1fr));
+    overflow: scroll;
+    margin-bottom: 1rem;
+}
+
+.calendar::-webkit-scrollbar {
+    display: none;
+}
+
+.calendar .calendar-date {
+    height: 100%;
+    min-height: 5rem;
+    background-color: var(--primary-semitransparent);
+    border: 2px solid var(--secondary-semitransparent);
+}
+
+.calendar .calendar-date h4 {
+    background-color: var(--primary);
+    color: var(--primary-contrast);
+    padding: 0 0.5rem;
+    border-bottom: 2px solid white;
+}
+
+.calendar .calendar-date p {
+    padding: 0 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.calendar .calendar-date p:nth-of-type(1) {
+    margin-top: 0.25rem;
+}
+
+.calendar .calendar-date.secondary {
+    background-color: var(--secondary-semitransparent);
+}
+
+.calendar .calendar-date.secondary h4 {
+    background-color: var(--secondary);
+    color: var(--secondary-contrast);
+    padding: 0 0.5rem;
+    border-bottom: 2px solid white;
+}
+
+.calendar .calendar-date.secondary .link {
+    color: var(--contrast);
+}

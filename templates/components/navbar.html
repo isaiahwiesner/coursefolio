@@ -1,0 +1,11 @@
+<nav>
+    <h2><a href="/">CourseFolio</a></h2>
+    <ul>
+        <li>
+            <a href="/" class="{% if active_page == 'dashboard' %}active{% endif %}">Dashboard</a>
+        </li>
+        <li>
+            <a href="/courses" class="{% if active_page == 'courses' %}active{% endif %}">Courses</a>
+        </li>
+    </ul>
+</nav>

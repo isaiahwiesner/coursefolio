@@ -1,0 +1,68 @@
+{% extends "layouts/layout.html" %}
+{% block title %}Add Mark - CourseFolio{% endblock %}
+
+{% include "components/navbar.html" %}
+
+{% block body %}
+
+<main class="content-navbar content-footer flex justify-center">
+    <form id="add-form" class="card w-30 flex flex-col gap-1">
+        <h2>Add Mark</h2>
+        <p class="required-legend"></p>
+        <section class="form-group required">
+            <label for="name">Name</label>
+            <input type="text" id="name" class="form-control">
+        </section>
+        <section class="form-group required">
+            <label for="mark-type">Mark Type</label>
+            <select id="mark-type" class="form-control" value="">
+                <option value="">-- Mark Type</option>
+                <option value="ASSIGNMENT">Assignment</option>
+                <option value="EXAM">Exam</option>
+                <option value="QUIZ">Quiz</option>
+                <option value="TEST">Test</option>
+            </select>
+        </section>
+        <section class="form-group">
+            <label>Start Date</label>
+            <input type="date" id="start-date" class="form-control">
+            <input type="time" id="start-time" class="form-control">
+        </section>
+        <section class="form-group required">
+            <label>End Date</label>
+            <input type="date" id="end-date" class="form-control">
+            <input type="time" id="end-time" class="form-control">
+        </section>
+        <section class="form-group">
+            <label for="marks">Marks</label>
+            <input type="number" min="-1" id="marks" value="-1" class="form-control">
+            <p class="form-tooltip">Hint: -1 = null</p>
+        </section>
+        <section class="form-group">
+            <label for="total-marks">Total Marks</label>
+            <input type="number" min="-1" id="total-marks" value="-1" class="form-control">
+            <p class="form-tooltip">Hint: -1 = null</p>
+        </section>
+        <section class="form-group required">
+            <label for="weight">Weight (%)</label>
+            <input type="number" min="0" id="weight" value="0" class="form-control">
+        </section>
+        <section class="form-group required">
+            <label for="course-id">Course ID</label>
+            <input type="text" id="course-id" class="form-control" value="{% if courseId %}{{ courseId }}{% endif %}">
+        </section>
+        <p class="error-text" id="add-error"></p>
+        <button class="btn btn-primary" type="button" id="add-mark">Add Mark</button>
+        {% if courseId %}
+        <a href="/courses/{{ courseId }}/marks" class="link" title="Cancel">Cancel</a>
+        {% else %}
+        <a href="/marks" class="link" title="Cancel">Cancel</a>
+        {% endif %}
+    </form>
+</main>
+
+<script src="{{ url_for('static', path='js/marks/add_mark.js') }}"></script>
+
+{% include "components/footer.html" %}
+
+{% endblock %}

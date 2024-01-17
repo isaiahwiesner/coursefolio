@@ -1,0 +1,72 @@
+{% extends "layouts/layout.html" %}
+{% block title %}Update {{ mark['name'] }} - CourseFolio{% endblock %}
+
+{% include "components/navbar.html" %}
+
+{% block body %}
+
+<main class="content-navbar content-footer flex justify-center">
+    <form id="update-form" class="card w-30 flex flex-col gap-1">
+        <h2>Update {{ mark['name'] }}</h2>
+        <p class="required-legend"></p>
+        <section class="form-group required">
+            <label for="name">Name</label>
+            <input type="text" id="name" class="form-control" value="{{ mark['name'] }}">
+        </section>
+        <section class="form-group required">
+            <label for="mark-type">Mark Type</label>
+            <select id="mark-type" class="form-control" value="{{ mark['markType'] }}">
+                <option value="">-- Mark Type</option>
+                <option value="ASSIGNMENT">Assignment</option>
+                <option value="EXAM">Exam</option>
+                <option value="QUIZ">Quiz</option>
+                <option value="TEST">Test</option>
+            </select>
+        </section>
+        <section class="form-group">
+            <label>Start Date</label>
+            <input type="date" id="start-date" class="form-control">
+            <input type="time" id="start-time" class="form-control">
+        </section>
+        <section class="form-group required">
+            <label>End Date</label>
+            <input type="date" id="end-date" class="form-control">
+            <input type="time" id="end-time" class="form-control">
+        </section>
+        <section class="form-group">
+            <label for="marks">Marks</label>
+            <input type="number" min="-1" id="marks" class="form-control" value="-1">
+            <p class="form-tooltip">Hint: -1 = null</p>
+        </section>
+        <section class="form-group">
+            <label for="total-marks">Total Marks</label>
+            <input type="number" min="-1" id="total-marks" class="form-control" value="-1">
+            <p class="form-tooltip">Hint: -1 = null</p>
+        </section>
+        <section class="form-group required">
+            <label for="weight">Weight (%)</label>
+            <input type="number" min="0" id="weight" class="form-control" value="{{ mark['weight'] }}">
+        </section>
+        <section class="form-group required">
+            <label for="completed">Completed</label>
+            <select id="completed" class="form-control">
+                <option value="false">False</option>
+                <option value="true">True</option>
+            </select>
+        </section>
+        <p class="error-text" id="update-error"></p>
+        <button class="btn btn-primary" type="button" id="update-mark">Update Mark</button>
+        <button class="btn btn-error" type="button" id="delete-mark">Delete Mark</button>
+        <a href="/courses/{{ mark['courseId'] }}/marks" class="link" title="Cancel">Cancel</a>
+    </form>
+</main>
+
+<script src="{{ url_for('static', path='js/utils/serialize.js') }}"></script>
+<script>
+    const mark = JSON.parse(serialize("{{ mark }}"))
+</script>
+<script src="{{ url_for('static', path='js/marks/update_mark.js') }}"></script>
+
+{% include "components/footer.html" %}
+
+{% endblock %}

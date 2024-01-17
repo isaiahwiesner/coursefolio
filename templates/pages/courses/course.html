@@ -1,0 +1,95 @@
+{% extends "layouts/layout.html" %}
+{% block title %}{% if course["courseCode"] %}{{ course["courseCode"] }} {% endif %}{{ course["name"] }} - Courses -
+CourseFolio{% endblock %}
+
+{% include "components/navbar.html" %}
+
+{% block body %}
+
+<style>
+    .recent-marks {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 0.5rem;
+    }
+
+    .recent-marks .recent-mark {
+        color: var(--contrast);
+        background-color: var(--background);
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        width: 100%;
+        max-width: 15rem;
+        transition: transform 150ms ease-in-out, box-shadow 150ms ease-in-out;
+    }
+
+    .recent-marks a:link {
+        text-decoration: none;
+    }
+
+    .recent-marks a:hover>.recent-mark {
+        transform: translateY(-0.25rem);
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
+    }
+</style>
+
+<main class="content-navbar content-footer flex flex-col gap-2">
+    <section class="course-header">
+        <h1>{% if course["courseCode"] %}{{ course["courseCode"] }} {% endif %}{{ course["name"] }}</h1>
+        {% if course["classCode"] %}
+        <p class="light-contrast">Class {{ course["classCode"] }}</p>
+        {% endif %}
+    </section>
+    <section class="card">
+        <h3 class="weekly-title">Upcoming Events (<a href="/courses/{{ course['id'] }}/calendar" class="link"
+                title="Course Calendar">View
+                All</a>)</h3>
+        <section class="weekly-schedule">
+            {% for i in range(5) %}
+            <section class="day" id="weekly-day-{{ i }}">
+                <h4></h4>
+            </section>
+            {% endfor %}
+        </section>
+    </section>
+    <section class="card">
+        <h3>Mark Summary</h3>
+        <section class="mark-summary">
+            <section class="mark-detail">
+                <h1 id="mark-average"></h1>
+                <h4>Average</h4>
+            </section>
+            <section class="mark-detail">
+                <h1 id="mark-completed"></h1>
+                <h4>Completed</h4>
+            </section>
+            <section class="mark-detail">
+                <h1 id="mark-achieved"></h1>
+                <h4>Achieved</h4>
+            </section>
+        </section>
+    </section>
+    <section class="card">
+        <h3>Recent Marks (<a href="/courses/{{ course['id'] }}/marks" class="link" title="Course Marks">View All</a>)
+        </h3>
+        <section class="recent-marks" id="recent-marks"></section>
+    </section>
+    <section class="page-bottom">
+        <button class="btn btn-error-outline" id="delete-course">
+            Delete Course
+        </button>
+    </section>
+</main>
+
+<script src="{{ url_for('static', path='js/utils/serialize.js') }}"></script>
+<script>
+    const course = JSON.parse(serialize("{{ course }}"))
+    const marks = JSON.parse(serialize("{{ marks }}"))
+</script>
+<script src="{{ url_for('static', path='js/courses/course.js') }}"></script>
+
+{% include "components/footer.html" %}
+
+{% endblock %}

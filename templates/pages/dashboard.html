@@ -1,0 +1,30 @@
+{% extends "layouts/layout.html" %}
+{% block title %}Dashboard - CourseFolio{% endblock %}
+
+{% include "components/navbar.html" %}
+
+{% block body %}
+
+<main class="content-navbar content-footer flex flex-col gap-2">
+    <h1>Dashboard</h1>
+    <section class="card">
+        <h3 class="weekly-title">Weekly Schedule</h3>
+        <section class="weekly-schedule">
+            {% for i in range(5) %}
+            <section class="day" id="weekly-day-{{ i }}">
+                <h4></h4>
+            </section>
+            {% endfor %}
+        </section>
+    </section>
+</main>
+
+<script src="{{ url_for('static', path='js/utils/serialize.js') }}"></script>
+<script>
+    const courses = JSON.parse(serialize("{{ courses }}"))
+</script>
+<script src="{{ url_for('static', path='js/dashboard.js') }}"></script>
+
+{% include "components/footer.html" %}
+
+{% endblock %}

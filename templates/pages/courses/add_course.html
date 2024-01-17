@@ -1,0 +1,59 @@
+{% extends "layouts/layout.html" %}
+{% block title %}Add Course - CourseFolio{% endblock %}
+
+{% include "components/navbar.html" %}
+
+{% block body %}
+
+<main class="content-navbar content-footer flex justify-center">
+    <form id="add-form" class="card w-30 flex flex-col gap-1">
+        <h2>Add Course</h2>
+        <p class="required-legend"></p>
+        <section class="form-group required">
+            <label for="name">Name</label>
+            <input type="text" id="name" class="form-control">
+        </section>
+        <section class="form-group">
+            <label for="course-code">Course Code</label>
+            <input type="text" id="course-code" class="form-control">
+        </section>
+        <section class="form-group">
+            <label for="class-code">Class Code</label>
+            <input type="text" id="class-code" class="form-control">
+        </section>
+        <section class="form-group required">
+            <label for="weeks">Weeks</label>
+            <input type="number" min="1" max="52" id="weeks" value="14" class="form-control">
+        </section>
+        <section class="form-group required">
+            <label for="start">Start Date</label>
+            <input type="date" id="start" class="form-control">
+        </section>
+        <section class="form-group">
+            <label>Schedule</label>
+            <select id="schedule-day" class="form-control" value="" disabled>
+                <option value="">-- Day</option>
+            </select>
+            <input type="time" id="schedule-start" class="form-control">
+            <input type="number" id="schedule-duration" placeholder="Duration (minutes)" class="form-control" min="1"
+                max="720">
+            <button class="btn btn-secondary" id="schedule-add" type="button" disabled>
+                Add
+            </button>
+            <section class="input-list" id="schedule-list"></section>
+        </section>
+        <section class="form-group">
+            <label for="reading-week">Reading Week</label>
+            <input type="date" id="reading-week" class="form-control">
+        </section>
+        <p class="error-text" id="add-error"></p>
+        <button class="btn btn-primary" type="button" id="add-course">Add Course</button>
+        <a href="/courses" class="link" title="Cancel">Cancel</a>
+    </form>
+</main>
+
+<script src="{{ url_for('static', path='js/courses/add_course.js') }}"></script>
+
+{% include "components/footer.html" %}
+
+{% endblock %}

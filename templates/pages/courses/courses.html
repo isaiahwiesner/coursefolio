@@ -1,0 +1,43 @@
+{% extends "layouts/layout.html" %}
+{% block title %}Courses - CourseFolio{% endblock %}
+
+{% include "components/navbar.html" %}
+
+{% block body %}
+
+<main class="content-navbar content-footer">
+    <h1>Courses</h1>
+    <section class="course-container">
+        {% for course in courses %}
+        <a href="/courses/{{ course['id'] }}" title="{% if course['courseCode'] %}{{ course['courseCode'] }} {% endif %}{{ course['name'] }}">
+            <section class="course card">
+                <h4>
+                    {% if course["courseCode"] %}{{ course["courseCode"] }} {% endif %}
+                    {{ course["name"] }}
+                </h4>
+                <p class="light-contrast"></p>
+            </section>
+        </a>
+        {% endfor %}
+        <a href="/courses/add" title="Add Course">
+            <section class="course card add-course">
+                <section>
+                    <span class="material-symbols-outlined">
+                        add_circle
+                    </span>
+                    <p>Add Course</p>
+                </section>
+            </section>
+        </a>
+    </section>
+</main>
+
+<script src="{{ url_for('static', path='js/utils/serialize.js') }}"></script>
+<script>
+    const courses = JSON.parse(serialize("{{ courses }}"))
+</script>
+<script src="{{ url_for('static', path='js/courses/courses.js') }}"></script>
+
+{% include "components/footer.html" %}
+
+{% endblock %}

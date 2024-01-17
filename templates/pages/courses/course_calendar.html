@@ -1,0 +1,42 @@
+{% extends "layouts/layout.html" %}
+{% block title %}Calendar - {% if course["courseCode"] %}{{ course["courseCode"] }} {% endif %}{{ course["name"] }} -
+Courses - CourseFolio{% endblock %}
+
+{% include "components/navbar.html" %}
+
+{% block body %}
+
+<main class="content-navbar content-footer flex flex-col gap-2">
+    <section class="course-header">
+        <h1>Calendar - {% if course["courseCode"] %}{{ course["courseCode"] }} {% endif %}{{ course["name"] }}</h1>
+        {% if course["classCode"] %}
+        <p class="light-contrast">Class {{ course["classCode"] }}</p>
+        {% endif %}
+    </section>
+    <section class="card">
+        <section class="calendar-controls">
+            <span class="material-symbols-outlined disabled" id="cal-back">
+                arrow_back_ios
+            </span>
+            <h2 id="cal-title"></h2>
+            <span class="material-symbols-outlined disabled" id="cal-next">
+                arrow_forward_ios
+            </span>
+        </section>
+        <section class="calendar" id="cal-dates"></section>
+        <a href="/courses/{{ course['id'] }}" class="link" title="Course Homepage">
+            <p class="text-center">Back to course homepage</p>
+        </a>
+    </section>
+</main>
+
+<script src="{{ url_for('static', path='js/utils/serialize.js') }}"></script>
+<script>
+    const course = JSON.parse(serialize("{{ course }}"))
+    const marks = JSON.parse(serialize("{{ marks }}"))
+</script>
+<script src="{{ url_for('static', path='js/courses/course_calendar.js') }}"></script>
+
+{% include "components/footer.html" %}
+
+{% endblock %}
