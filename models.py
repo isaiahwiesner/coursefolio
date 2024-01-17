@@ -535,7 +535,7 @@ marks = Marks(fields=[
     SQLIntField(name="startDate", min=0, default=None),
     SQLIntField(name="endDate", nullable=False, min=0),
     SQLFloatField(name="marks", min=0, default=None),
-    SQLIntField(name="totalMarks", min=1, default=None),
+    SQLFloatField(name="totalMarks", min=1, default=None),
     SQLFloatField(name="weight", nullable=False, min=0, max=100),
     SQLBoolField(name="completed", nullable=False, default=False),
     SQLTextField(name="courseId", nullable=False),
