@@ -711,3 +711,19 @@ h3.weekly-title {
     border: 2px solid var(--test);
     color: var(--test-contrast);
 }
+
+
+
+/* Marks */
+.mark-times {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.mark-time {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
