@@ -1,0 +1,18 @@
+{% extends "layouts/layout.html" %}
+{% block title %}Page not found - CourseFolio{% endblock %}
+
+{% include "components/navbar.html" %}
+
+{% block body %}
+
+<main class="content-navbar content-footer flex flex-col gap-2 items-center">
+    <h1 class="w-30">Page not found</h1>
+    <p class="w-30">The page you are looking for does not exist. Please check the URL and try again.</p>
+    <p class="w-30">
+        <a href="/" class="link" title="Homepage">Back to homepage</a>
+    </p>
+</main>
+
+{% include "components/footer.html" %}
+
+{% endblock %}
