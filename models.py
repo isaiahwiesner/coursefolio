@@ -334,6 +334,7 @@ class Courses(SQLTableBaseModel):
         q_string = f'{q_string} WHERE {filter}'
         if order:
             q_string = f'{q_string} ORDER BY {order}'
+        print(q_string)
         cur.execute(q_string, [(None if update[k] in (-1, "$NULL") else update[k]) for k in update.keys()])
         con.commit()
         return cur.execute(f'SELECT * FROM courses WHERE {filter}').fetchall()

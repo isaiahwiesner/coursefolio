@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     updateMarkError.textContent = data.detail
                 }
                 else {
-                    updateMarkError.textContent = "Unable to update mark."
+                    updateMarkError.textContent = "Unable to delete mark."
                 }
             }
         })

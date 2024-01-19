@@ -48,6 +48,18 @@ def view_course(request: Request, courseId: str):
         "course": course_data,
         "marks": mark_data
     })
+# Update Course
+@page_router.get("/courses/{courseId}/update", tags=["Courses"])
+def update_course(request: Request, courseId: str = None):
+    course_query = courses.query_courses(filter=f'id="{courseId}"').fetchall()
+    if len(course_query) == 0:
+        raise HTTPException(status_code=404,
+                            detail="Course not found.")
+    course_data = CourseDataclass(*course_query[0]).to_dict()
+    return templates.TemplateResponse("pages/courses/update_course.html", {
+        "request": request,
+        "course": course_data
+    })
 # View Course Calendar
 @page_router.get("/courses/{courseId}/calendar", tags=["Courses"])
 def course_calendar(request: Request, courseId: str):
@@ -101,7 +113,7 @@ def mark_page(request: Request, markId: str = None):
     })
 # Update Mark
 @page_router.get("/marks/{markId}/update", tags=["Marks"])
-def add_mark(request: Request, markId: str = None):
+def update_mark(request: Request, markId: str = None):
     mark_query = marks.query_marks(filter=f'id="{markId}"').fetchall()
     if len(mark_query) == 0:
         raise HTTPException(status_code=404,

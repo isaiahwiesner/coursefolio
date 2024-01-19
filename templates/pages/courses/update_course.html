@@ -1,0 +1,265 @@
+{% extends "layouts/layout.html" %}
+{% block title %}Update {% if course["courseCode"] %}{{ course["courseCode"] }} {% endif %}{{ course["name"] }} -
+CourseFolio{% endblock %}
+
+{% include "components/navbar.html" %}
+
+{% block body %}
+
+<main class="content-navbar content-footer flex justify-center">
+    <form id="update-form" class="card w-30 flex flex-col gap-1">
+        <h2>Update {% if course["courseCode"] %}{{ course["courseCode"] }} {% endif %}{{ course["name"] }}</h2>
+        <p class="required-legend"></p>
+        <section class="form-group required">
+            <label for="name">Name</label>
+            <input type="text" id="name" class="form-control" value="{{ course['name'] }}">
+        </section>
+        <section class="form-group">
+            <label for="course-code">Course Code</label>
+            <input type="text" id="course-code" class="form-control"
+                value="{% if course['courseCode'] %}{{ course['courseCode'] }}{% endif %}">
+        </section>
+        <section class="form-group">
+            <label for="class-code">Class Code</label>
+            <input type="text" id="class-code" class="form-control"
+                value="{% if course['classCode'] %}{{ course['classCode'] }}{% endif %}">
+        </section>
+        <section class="form-group required">
+            <label for="weeks">Weeks</label>
+            <input type="number" min="1" max="52" id="weeks" value="14" class="form-control"
+                value="{{ course['name'] }}">
+        </section>
+        <section class="form-group required">
+            <label for="start">Start Date</label>
+            <input type="date" id="start" class="form-control">
+        </section>
+        <section class="form-group">
+            <label>Schedule</label>
+            <select id="schedule-day" class="form-control" value="" disabled>
+                <option value="">-- Day</option>
+            </select>
+            <input type="time" id="schedule-start" class="form-control">
+            <input type="number" id="schedule-duration" placeholder="Duration (minutes)" class="form-control" min="1"
+                max="720">
+            <button class="btn btn-secondary" id="schedule-add" type="button" disabled>
+                Add
+            </button>
+            <section class="input-list" id="schedule-list"></section>
+        </section>
+        <section class="form-group">
+            <label for="reading-week">Reading Week</label>
+            <input type="date" id="reading-week" class="form-control">
+        </section>
+        <p class="error-text" id="update-error"></p>
+        <button class="btn btn-primary" type="button" id="update-course" title="Update Course">Update Course</button>
+        <button class="btn btn-error" type="button" id="delete-course" title="Delete Course">Delete Course</button>
+        <a href="/courses/{{ course['id'] }}" class="link" title="Cancel">Cancel</a>
+    </form>
+</main>
+
+<script src="{{ url_for('static', path='js/utils/serialize.js') }}"></script>
+<script>
+    const course = JSON.parse(serialize("{{ course }}"))
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        var schedule = []
+        const updateForm = document.getElementById("update-form")
+        const nameInput = document.getElementById("name")
+        const courseCodeInput = document.getElementById("course-code")
+        const classCodeInput = document.getElementById("class-code")
+        const weeksInput = document.getElementById("weeks")
+        const startInput = document.getElementById("start")
+        const scheduleDayInput = document.getElementById("schedule-day")
+        const scheduleStartInput = document.getElementById("schedule-start")
+        const scheduleDurationInput = document.getElementById("schedule-duration")
+        const readingWeekInput = document.getElementById("reading-week")
+        const scheduleAddButton = document.getElementById("schedule-add")
+        const scheduleListSection = document.getElementById("schedule-list")
+        const updateCourseError = document.getElementById("update-error")
+        const updateCourseBtn = document.getElementById("update-course")
+        const deleteCourseBtn = document.getElementById("delete-course")
+
+        const render = (changeInputs = true) => {
+            schedule.sort((a, b) => (a[0] - b[0] != 0) ? a[0] - b[0] : a[1] - b[1])
+            if (!startInput.value) {
+                scheduleDayInput.value = ""
+                scheduleDayInput.setAttribute("disabled", "true")
+                scheduleDayInput.innerHTML = ""
+                let option = document.createElement("option")
+                option.setAttribute("value", "")
+                option.textContent = "-- Day"
+                scheduleDayInput.append(option)
+            }
+            else {
+                scheduleDayInput.removeAttribute("disabled")
+                if (changeInputs) {
+                    scheduleDayInput.innerHTML = ""
+                    let option = document.createElement("option")
+                    option.setAttribute("value", "")
+                    option.textContent = "-- Day"
+                    scheduleDayInput.append(option)
+                    var start = new Date(startInput.value + "T00:00:00").getTime()
+                    const days = "Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday".split(",")
+                    for (var i = 0; i < 5; i++) {
+                        let option = document.createElement("option")
+                        option.setAttribute("value", i)
+                        option.textContent = days[new Date(start + (i * 24 * 60 * 60 * 1000)).getDay()]
+                        scheduleDayInput.append(option)
+                    }
+                }
+            }
+            if (!scheduleDayInput.value || !scheduleStartInput.value || !scheduleDurationInput.value) {
+                scheduleAddButton.setAttribute("disabled", "true")
+            }
+            else {
+                scheduleAddButton.removeAttribute("disabled")
+            }
+            if (schedule.length == 0) {
+                scheduleListSection.innerHTML = ""
+                scheduleListSection.style.display = "none"
+            }
+            else {
+                scheduleListSection.innerHTML = ""
+                scheduleListSection.style.display = "flex"
+                var start = new Date(startInput.value + "T00:00:00").getTime()
+                schedule.forEach((s, i) => {
+                    var sec = document.createElement("section")
+                    sec.classList.add("input-list-item")
+                    sec.textContent = `${new Date(start + s[0]).toDateString().split(" ")[0]}. ${new Date(start + s[0]).toLocaleTimeString().slice(0, -6) + new Date(start + s[0]).toLocaleTimeString().slice(-2)}-${new Date(start + s[1]).toLocaleTimeString().slice(0, -6) + new Date(start + s[1]).toLocaleTimeString().slice(-2)}`
+                    let icon = document.createElement("span")
+                    icon.classList.add("material-symbols-outlined")
+                    icon.textContent = "close"
+                    icon.onclick = () => handleRemoveSched(i)
+                    sec.append(icon)
+                    scheduleListSection.append(sec)
+                })
+            }
+        }
+
+        const handleAddSched = () => {
+            const start = new Date(startInput.value + "T00:00:00").getTime()
+            const schedDay = parseInt(scheduleDayInput.value)
+            const schedStart = new Date(`${new Date(start).getFullYear()}-${String(new Date(start).getMonth() + 1).padStart(2, "0")}-${String(new Date(start).getDate()).padStart(2, "0")}T${scheduleStartInput.value}`)
+                .getTime() - start + (schedDay * 24 * 60 * 60 * 1000)
+            const schedDur = parseInt(scheduleDurationInput.value)
+            const schedEnd = schedStart + (schedDur * 60 * 1000)
+            schedule.push([schedStart, schedEnd])
+            scheduleDayInput.value = ""
+            scheduleStartInput.value = ""
+            scheduleDurationInput.value = ""
+            render(false)
+        }
+
+        const handleRemoveSched = (index) => {
+            schedule = [...schedule.slice(0, index), ...schedule.slice(index + 1)]
+            render(false)
+        }
+
+        const handleSubmit = (e) => {
+            e.preventDefault()
+        }
+
+        const handleAdd = async () => {
+            updateCourseError.style.display = "none"
+            updateCourseError.textContent = ""
+            const name = nameInput.value.trim()
+            const courseCode = courseCodeInput.value.trim() ? courseCodeInput.value.trim() : null
+            const classCode = classCodeInput.value.trim() ? classCodeInput.value.trim() : null
+            const weeks = parseInt(weeksInput.value)
+            const start = new Date(startInput.value + "T00:00:00").getTime()
+            const sched = schedule.length > 0 ? schedule.map((s) => {
+                return `${s[0]}:${(s[1] - s[0]) / (60 * 1000)}`
+            }).join(",") : null
+            const readingWeek = readingWeekInput.value ? new Date(readingWeekInput.value + "T00:00:00").getTime() : null
+            let invalid = []
+            if (!name) invalid.push("name")
+            if (String(weeks) == "NaN") invalid.push("weeks")
+            else if (weeks < 1) invalid.push("weeks")
+            else if (weeks > 52) invalid.push("weeks")
+            if (String(start) == "NaN") invalid.push(start)
+            if (invalid.length > 0) {
+                updateCourseError.style.display = "block"
+                updateCourseError.textContent = `The following fields are invalid: ${invalid.join(", ")}`
+                return
+            }
+            const body = {
+                name,
+                courseCode: courseCode ? courseCode : "$NULL",
+                classCode: classCode ? classCode : "$NULL",
+                weeks,
+                start,
+                schedule: sched,
+                readingWeek: readingWeek ? readingWeek : -1
+            }
+            await fetch(`/api/courses/?filter=${encodeURIComponent("id='" + course.id + "'")}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            }).then(async (res) => {
+                const data = await res.json()
+                return [data, res.ok]
+            }).then((res) => {
+                const [data, ok] = res
+                if (ok) {
+                    window.location.reload()
+                }
+                else {
+                    updateCourseError.style.display = "block"
+                    if (data.detail) {
+                        updateCourseError.textContent = data.detail
+                    }
+                    else {
+                        updateCourseError.textContent = "Unable to update course."
+                    }
+                }
+            })
+        }
+
+        const handleDelete = async () => {
+            await fetch(`/api/courses?filter=${encodeURIComponent("id='" + course.id + "'")}`, {
+                method: "DELETE"
+            }).then(async (res) => {
+                const data = await res.json()
+                return [data, res.ok]
+            }).then((res) => {
+                const [data, ok] = res
+                if (ok) {
+                    window.location = `/courses`
+                }
+                else {
+                    updateMarkError.style.display = "block"
+                    if (data.detail) {
+                        updateMarkError.textContent = data.detail
+                    }
+                    else {
+                        updateMarkError.textContent = "Unable to delete course."
+                    }
+                }
+            })
+        }
+
+        startInput.value = new Date(course.start).toISOString().split("T")[0]
+        if (course.schedule) {
+            schedule = course.schedule
+        }
+        if (course.readingWeek) readingWeekInput.value = new Date(course.readingWeek).toISOString().split("T")[0]
+        updateCourseError.style.display = "none"
+        render()
+
+        scheduleAddButton.addEventListener("click", handleAddSched)
+        updateForm.addEventListener("submit", handleSubmit)
+        updateCourseBtn.addEventListener("click", handleAdd)
+        deleteCourseBtn.addEventListener("click", handleDelete)
+        startInput.addEventListener("change", render)
+        scheduleDayInput.addEventListener("change", () => render(false))
+        scheduleStartInput.addEventListener("change", () => render(false))
+        scheduleDurationInput.addEventListener("change", () => render(false))
+    })
+</script>
+
+{% include "components/footer.html" %}
+
+{% endblock %}

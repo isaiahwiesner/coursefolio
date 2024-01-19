@@ -101,6 +101,7 @@ def update_courses(body: UpdateCourseBody, filter: str = None, order: str = None
     if not filter:
         raise HTTPException(status_code=400,
                             detail="Filter cannot be empty.")
+    print(body.get_updates())
     update = courses.update_courses(update=body.get_updates(), filter=filter, order=order)
     return JSONResponse(content={"detail": f'{len(update)} course{"s" if len(update) != 1 else ""} updated.',
                                  "courses": [CourseDataclass(*x).to_dict() for x in update]},
