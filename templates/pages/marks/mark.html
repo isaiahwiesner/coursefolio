@@ -1,0 +1,139 @@
+{% extends "layouts/layout.html" %}
+{% block title %}{{ mark["name"] }} - {% if course["courseCode"] %}{{ course["courseCode"] }} {% endif %}{{
+course["name"] }} - CourseFolio{% endblock %}
+
+{% include "components/navbar.html" %}
+
+{% block body %}
+
+<style>
+    .mark-times {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .mark-time {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+</style>
+
+<main class="content-navbar content-footer flex flex-col gap-2">
+    <section class="course-header">
+        <h1>{{ mark["name"] }}</h1>
+        <p class="light-contrast">
+            {% if course["courseCode"] %}{{ course["courseCode"] }} {% endif %}{{ course["name"] }}
+        </p>
+    </section>
+    <section class="card">
+        <h3>Mark</h3>
+        <section class="mark-summary">
+            <section class="mark-detail">
+                <h1 id="mark-actual"></h1>
+                <h4>Marks</h4>
+            </section>
+            <section class="mark-detail">
+                <h1 id="mark-percentage"></h1>
+                <h4>Grade</h4>
+            </section>
+            <section class="mark-detail">
+                <h1 id="mark-achieved"></h1>
+                <h4>Weight Achieved</h4>
+            </section>
+        </section>
+    </section>
+    <section class="mark-times">
+        {% if mark["markType"] == "ASSIGNMENT" %}
+        <section class="card mark-time span-2">
+            <h4>Due</h4>
+            <h1 id="endDate"></h1>
+        </section>
+        {% else %}
+        {% if mark["startDate"] %}
+        <section class="card mark-time">
+            <h4>Starts</h4>
+            <h1 id="startDate"></h1>
+        </section>
+        <section class="card mark-time">
+            <h4>Ends</h4>
+            <h1 id="endDate"></h1>
+        </section>
+        {% else %}
+        <section class="card mark-time span-2">
+            <h4>Ends</h4>
+            <h1 id="endDate"></h1>
+        </section>
+        {% endif %}
+        {% endif %}
+    </section>
+    <section class="flex flex-col items-center gap-1">
+        <a href="/marks/{{ mark['id'] }}/update" class="w-20" title="Update Mark">
+            <button class="btn btn-primary w-20">
+                Update Mark
+            </button>
+        </a>
+    </section>
+    <section class="flex flex-col gap-05 items-center">
+        <p class="text-center">
+            <a href="/courses/{{ course['id'] }}/marks" class="link" title="Course Marks">
+                Back to course marks
+            </a>
+        </p>
+        <p class="text-center">
+            <a href="/courses/{{ course['id'] }}" class="link" title="Course Homepage">
+                Back to course homepage
+            </a>
+        </p>
+    </section>
+</main>
+
+<script src="{{ url_for('static', path='js/utils/serialize.js') }}"></script>
+<script>
+    const mark = JSON.parse(serialize("{{ mark }}"))
+    const course = JSON.parse(serialize("{{ course }}"))
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const renderMarkInfo = () => {
+            const markActual = document.getElementById("mark-actual")
+            const markPercent = document.getElementById("mark-percentage")
+            const markAchieved = document.getElementById("mark-achieved")
+            if (mark.marks == null || mark.totalMarks == null) {
+                markActual.textContent = "--"
+                markPercent.textContent = "--"
+                markAchieved.textContent = "0.0%"
+            }
+            else {
+                let percent = mark.marks / mark.totalMarks * 100
+                let achieved = mark.marks / mark.totalMarks * mark.weight
+                markActual.textContent = `${mark.marks}/${mark.totalMarks}`
+                markPercent.textContent = percent.toFixed(1) + "%"
+                markAchieved.textContent = String(achieved).includes(".")
+                    ? String(achieved).split(".")[1].length > 2
+                        ? achieved.toFixed(2) + "%"
+                        : String(achieved) + "%"
+                    : String(achieved) + ".0%"
+            }
+        }
+        renderMarkInfo()
+
+        const renderTimeInfo = () => {
+            const endDate = document.getElementById("endDate")
+            const end = new Date(mark.endDate)
+            endDate.textContent = `${end.toDateString().split(" ")[0]}. ${end.toDateString().split(" ")[1]}. ${end.getDate()}, ${end.toLocaleTimeString().slice(0, -6) + end.toLocaleTimeString().slice(-2)}`
+            if (mark.markType != "ASSIGNMENT" && mark.startDate) {
+                const startDate = document.getElementById("startDate")
+                const start = new Date(mark.startDate)
+                startDate.textContent = `${start.toDateString().split(" ")[0]}. ${start.toDateString().split(" ")[1]}. ${start.getDate()}, ${start.toLocaleTimeString().slice(0, -6) + start.toLocaleTimeString().slice(-2)}`
+            }
+        }
+        renderTimeInfo()
+    })
+</script>
+
+{% include "components/footer.html" %}
+
+{% endblock %}

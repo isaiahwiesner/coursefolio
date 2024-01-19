@@ -200,22 +200,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     renderRecentMarks()
-
-    const deleteBtn = document.getElementById("delete-course")
-
-    const handleDelete = async () => {
-        await fetch(`/api/courses?filter=${encodeURIComponent("id='" + course.id + "'")}`, {
-            method: "DELETE"
-        }).then(async (res) => {
-            const data = await res.json()
-            return [data, res.ok]
-        }).then((res) => {
-            const [_, ok] = res
-            if (ok) {
-                window.location = "/courses"
-            }
-        })
-    }
-
-    deleteBtn.addEventListener("click", handleDelete)
 })

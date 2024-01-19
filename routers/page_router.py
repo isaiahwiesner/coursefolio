@@ -85,8 +85,22 @@ def add_mark(request: Request, courseId: str = None):
         "request": request,
         "courseId": courseId
     })
-# Update Mark
+# View Mark
 @page_router.get("/marks/{markId}", tags=["Marks"])
+def mark_page(request: Request, markId: str = None):
+    mark_query = marks.query_marks(filter=f'id="{markId}"').fetchall()
+    if len(mark_query) == 0:
+        raise HTTPException(status_code=404,
+                            detail="Mark not found.")
+    mark_data = MarkDataclass(*mark_query[0]).to_dict()
+    course_data = CourseDataclass(*courses.query_courses(filter=f'id="{mark_data["courseId"]}"').fetchall()[0]).to_dict()
+    return templates.TemplateResponse("pages/marks/mark.html", {
+        "request": request,
+        "mark": mark_data,
+        "course": course_data,
+    })
+# Update Mark
+@page_router.get("/marks/{markId}/update", tags=["Marks"])
 def add_mark(request: Request, markId: str = None):
     mark_query = marks.query_marks(filter=f'id="{markId}"').fetchall()
     if len(mark_query) == 0:

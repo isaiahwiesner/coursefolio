@@ -38,7 +38,7 @@ CourseFolio{% endblock %}
             </section>
             <section class="mark-detail">
                 <h1 id="mark-achieved"></h1>
-                <h4>Achieved</h4>
+                <h4>Total Achieved</h4>
             </section>
         </section>
     </section>
@@ -47,10 +47,17 @@ CourseFolio{% endblock %}
         </h3>
         <section class="recent-marks" id="recent-marks"></section>
     </section>
-    <section class="page-bottom">
-        <button class="btn btn-error-outline" id="delete-course" title="Delete Course">
-            Delete Course
-        </button>
+    <section class="flex flex-col items-center gap-1">
+        <a href="/courses/{{ course['id'] }}/update" class="w-20" title="Update Course">
+            <button class="btn btn-primary w-20" title="Delete Course">
+                Update Course
+            </button>
+        </a>
+    </section>
+    <section class="flex flex-col items-center gap-05">
+        <p class="text-center">
+            <a href="/courses" class="link" title="All Courses">Back to courses</a>
+        </p>
     </section>
 </main>
 
