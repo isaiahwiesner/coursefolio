@@ -1,7 +1,8 @@
 venv/
-scripts/
 build/
 **/__pycache__/
 *.db
 *.sqbpro
 .env
+scripts/*
+!scripts/install_requirements.bat
